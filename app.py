@@ -47,7 +47,7 @@ def all_events():
     return jsonify(events)
 
 
-@app.route('/events/event-management/<int:event_id>', methods=['DELETE'])
+@app.route('/events/<int:event_id>', methods=['DELETE'])
 def delete_event(event_id):
     conn = get_connection()
     cur = conn.cursor()
@@ -87,7 +87,7 @@ def add_event():
     return ({"success":"Event Deleted Succesfully"}), 200
 
 
-@app.route('/events/event-management/<int:event_id>', methods=['PUT'])
+@app.route('/events/<int:event_id>', methods=['PUT'])
 def update_event(event_id):
     data = request.json
     title=data.get('title')
@@ -107,6 +107,7 @@ def update_event(event_id):
     conn.close()
 
     return ({"success":"Event Updated Succesfully"}), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
