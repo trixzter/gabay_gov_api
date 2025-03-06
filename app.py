@@ -35,22 +35,6 @@ def add_event():
     return ({"success":"Event Deleted Succesfully"}), 200
 
 
-@app.route('/events/<int:event_id>', methods=['GET'])
-def get_event(event_id):
-    conn = get_connection()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute ('SELECT * FROM events WHERE id=%s;', (event_id,))
-    event = cur.fetchone()
-    cur.close()
-    conn.close()
-
-    if event is None:
-        return jsonify({"Error": "Event not found"}), 404
-    
-    event['time'] = event['time'].strftime('%H:%M:%S')
-    return jsonify(event)
-
-
 @app.route('/events', methods=['GET'])
 def all_events():
     conn = get_connection()
@@ -67,6 +51,22 @@ def all_events():
         event['time'] = event['time'].strftime('%H:%M:%S')
     
     return jsonify(events)
+
+
+@app.route('/events/<int:event_id>', methods=['GET'])
+def get_event(event_id):
+    conn = get_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute ('SELECT * FROM events WHERE id=%s;', (event_id,))
+    event = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if event is None:
+        return jsonify({"Error": "Event not found"}), 404
+    
+    event['time'] = event['time'].strftime('%H:%M:%S')
+    return jsonify(event)
 
 
 @app.route('/events/<int:event_id>', methods=['PUT'])
