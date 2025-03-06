@@ -13,6 +13,28 @@ def get_connection():
 
 get_connection()
 
+
+@app.route('/events', methods=['POST'])
+def add_event():
+    data = request.json 
+    title = data.get('title')
+    date = data.get('date')
+    time = data.get('time')
+    location = data.get('location')
+    photo = data.get('photo')
+    description = data.get('description')
+
+    conn = get_connection()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute ('''INSERT INTO events (title, date, time, location, photo, description) 
+                VALUES (%s, %s, %s, %s, %s, %s)''',(title, date, time, location, photo, description))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return ({"success":"Event Deleted Succesfully"}), 200
+
+
 @app.route('/events/<int:event_id>', methods=['GET'])
 def get_event(event_id):
     conn = get_connection()
@@ -47,46 +69,6 @@ def all_events():
     return jsonify(events)
 
 
-@app.route('/events/<int:event_id>', methods=['DELETE'])
-def delete_event(event_id):
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute ('SELECT id FROM events WHERE id = %s;', (event_id,))
-    event = cur.fetchone()
-
-    if event is None:
-        cur.close()
-        conn.close()
-        return ({"error":"Event not found"}), 404
-    
-    cur.execute('DELETE FROM events WHERE id=%s;',(event_id,))
-    conn.commit()
-    cur.close()
-    conn.close()
-    return ({"success":"Event deleted succesfully"}), 200
-
-
-@app.route('/events/new', methods=['POST'])
-def add_event():
-    data = request.json 
-    title = data.get('title')
-    date = data.get('date')
-    time = data.get('time')
-    location = data.get('location')
-    photo = data.get('photo')
-    description = data.get('description')
-
-    conn = get_connection()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute ('''INSERT INTO events (title, date, time, location, photo, description) 
-                VALUES (%s, %s, %s, %s, %s, %s)''',(title, date, time, location, photo, description))
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return ({"success":"Event Deleted Succesfully"}), 200
-
-
 @app.route('/events/<int:event_id>', methods=['PUT'])
 def update_event(event_id):
     data = request.json
@@ -107,6 +89,25 @@ def update_event(event_id):
     conn.close()
 
     return ({"success":"Event Updated Succesfully"}), 200
+
+
+@app.route('/events/<int:event_id>', methods=['DELETE'])
+def delete_event(event_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute ('SELECT id FROM events WHERE id = %s;', (event_id,))
+    event = cur.fetchone()
+
+    if event is None:
+        cur.close()
+        conn.close()
+        return ({"error":"Event not found"}), 404
+    
+    cur.execute('DELETE FROM events WHERE id=%s;',(event_id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return ({"success":"Event deleted succesfully"}), 200
 
 
 if __name__ == '__main__':
