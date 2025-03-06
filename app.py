@@ -29,7 +29,6 @@ def get_event(event_id):
     return jsonify(event)
 
 
-
 @app.route('/events', methods=['GET'])
 def all_events():
     conn = get_connection()
@@ -38,10 +37,28 @@ def all_events():
     events = cur.fetchall()
     cur.close()
     conn.close()
+
     for event in events:
         event['time'] = event['time'].strftime('%H:%M:%S')
     
     return jsonify(events)
+
+
+@app.route('/events/event-management/<int:event_id>', methods=['DELETE'])
+def delete_event(event_id):
+     conn = get_connection()
+     cur = conn.cursor()
+     cur.execute('DELETE FROM events WHERE id=%s;',(event_id,))
+     conn.commit()
+     cur.close()
+     conn.close()
+     
+     if event_id is None:
+          return ({"error":"Event not found"}), 404
+     
+     return ({"success":"Event Deleted Succesfully"}), 200
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
