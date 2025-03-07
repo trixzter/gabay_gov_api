@@ -46,7 +46,7 @@ def login():
     username = data.get('username')
     password = data.get('password')
         
-    cur.execute('''SELECT id, username, password 
+    cur.execute('''SELECT first_name, last_name, email, username, password
                 FROM organization_users 
                 WHERE username=%s AND password = %s;''', (username, password))
     user = cur.fetchone()
@@ -54,6 +54,8 @@ def login():
     conn.close()
 
     if user:
-        return jsonify({"Success":"Login Success"}), 200
+        first_name, last_name, email, username, password = user
+        fullname = f'{first_name} {last_name}'
+        return jsonify({"Email": email, "Name": fullname}), 200
     
     return jsonify({"Failed": "Login Failed"}), 422
