@@ -59,3 +59,31 @@ def login():
         return jsonify({"Email": email, "Name": fullname}), 200
     
     return jsonify({"Failed": "Login Failed"}), 422
+
+
+@users_bp.route('/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    
+    data = request.json
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    email = data.get('email')
+    password = data.get('password')
+    government_id = data.get('government_id')
+
+    cur.execute('SELECT id FROM organization_users WHERE id = %s', (user_id,))
+    user = cur.fetchone()
+
+    if user is None:
+        return jsonify ({"Error":"No user found"}), 422
+
+    cur.execute ('''UPDATE organization_users 
+                 SET first_name = %s, last_name = %s, email = %s, password = %s, government_id = %s WHERE id = %s''' ,
+                 (first_name, last_name, email, password, government_id, user_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return jsonify ({"Success":"User Updated Successfully"}), 200
