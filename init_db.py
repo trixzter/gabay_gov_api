@@ -38,5 +38,31 @@ def initialize_db():
     cur.close()
     conn.close()
 
+
+def insert_data():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""INSERT INTO organization_users 
+                (first_name, last_name, email, username, password, government_id)
+                VALUES ('Chrisostomo', 'Ibarra', 'chrisostomoibarra@gmail.com', 'ibarra123', 'chris123','govid'),
+                ('Maria', 'Clara', 'mariaclara@gmail.com', 'mariaclara', 'maria123', 'govid');
+                """)
+    
+    cur.execute('''INSERT INTO subscription_emails
+                (subscriber_email) VALUES ('padredamaso@gmail.com');''')
+    
+    cur.execute ('''INSERT INTO events
+                 (title, date, time, location, photo, description)
+                 VALUES ('libreng tuli', '2025-04-04', '9:00:00', 'lipa city', 'sampleimg1.jpg', 'libreng tuli para sa lahat'),
+                 ('libreng pagupit', '2025-05-05', '10:00:00', 'lipa city', 'sampleimg2.jpg', 'libreng pagupit para sa lahat')
+                    ''')
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
 if __name__ == '__main__':
     initialize_db()
+    insert_data()
