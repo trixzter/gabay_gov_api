@@ -37,9 +37,30 @@ def add_event():
 
 @events_bp.route('/', methods=['GET'])
 def all_events():
+    title = request.args.get('title')
+    location = request.args.get('location')
+
     conn = get_connection()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute ('SELECT * FROM events;')
+    
+    query = 'SELECT * FROM events'
+    params = []
+    conditions = []
+
+    if title:
+        conditions.append("title ILIKE %s")
+        params.append(f"%{title}%")
+    
+    if location:
+        conditions.append("location ILIKE %s")
+        params.append(f"%{location}%")
+
+    if conditions:
+        query += ' WHERE ' + ' AND '.join(conditions)
+    
+    query += ';'
+    
+    cur.execute(query, params)
     events = cur.fetchall()
     cur.close()
     conn.close()
