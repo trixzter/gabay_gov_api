@@ -28,7 +28,7 @@ python init_db.py
 This will create tables in the database and input data.
 
 ```sh
-app.py
+python app.py
 ```
 
 This will start the backend server and make the API accessible for use.
