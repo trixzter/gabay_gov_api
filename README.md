@@ -9,6 +9,14 @@ Psql -U postgres
 CREATE DATABASE gabay_gov;
 ```
 
+## Installation
+
+Before running the application, install the required dependencies:
+
+```sh
+pip install -r requirements.txt
+```
+
 ### After Creating PostgreSQL Database
 
 Run the following script to initialize the database:
@@ -19,13 +27,11 @@ python init_db.py
 
 This will create tables in the database and input data.
 
-## Installation
-
-Before running the application, install the required dependencies:
-
 ```sh
-pip install -r requirements.txt
+app.py
 ```
+
+This will start the backend server and make the API accessible for use.
 
 ## Project Structure
 
