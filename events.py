@@ -4,12 +4,13 @@ from psycopg2.extras import RealDictCursor
 
 events_bp = Blueprint ("events", __name__)
 
+
 def get_connection():
     return psycopg2.connect(
         host = 'localhost',
         database = 'gabay_gov',
-        user = 'jann',
-        password = '@dmin098')
+        user = 'postgres',
+        password = 'admin')
 
 get_connection()
 
@@ -32,7 +33,7 @@ def add_event():
     cur.close()
     conn.close()
 
-    return jsonify({"success":"Event Deleted Succesfully"}), 200
+    return jsonify({"success":"Event Added Succesfully"}), 200
 
 
 @events_bp.route('/', methods=['GET'])
