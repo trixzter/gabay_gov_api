@@ -9,13 +9,13 @@ def get_connection():
     return psycopg2.connect(
         host = 'localhost',
         database = 'gabay_gov',
-        user = 'postgres',
-        password = 'admin')
+        user = 'jann',
+        password = '@dmin098')
 
 get_connection()
 
 
-@events_bp.route('/', methods=['POST'])
+@events_bp.route('', methods=['POST'])
 def add_event():
     data = request.json 
     title = data.get('title')
@@ -36,7 +36,7 @@ def add_event():
     return jsonify({"success":"Event Added Succesfully"}), 200
 
 
-@events_bp.route('/', methods=['GET'])
+@events_bp.route('', methods=['GET'])
 def all_events():
     title = request.args.get('title')
     location = request.args.get('location')
