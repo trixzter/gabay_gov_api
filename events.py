@@ -36,7 +36,7 @@ def add_event():
     return jsonify({"success":"Event Added Succesfully"}), 200
 
 
-@events_bp.route('/', methods=['GET'])
+@events_bp.route('', methods=['GET'])
 def all_events():
     title = request.args.get('title')
     location = request.args.get('location')
