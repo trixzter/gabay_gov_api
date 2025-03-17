@@ -3,7 +3,7 @@ from dao.email_dao import create_email
 
 emails_bp = Blueprint ('emails', __name__)
 
-@emails_bp.route('/', methods=['POST'])
+@emails_bp.route('', methods=['POST'])
 def add_email ():
     data=request.json
     subscriber_email = data.get('subscriber_email')
