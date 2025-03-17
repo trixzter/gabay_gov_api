@@ -30,23 +30,25 @@ def update_user (id, first_name, last_name, email, username, password, governmen
   conn = get_connection ()
   cur = conn.cursor()
 
-  cur.execute('''SELECT id 
-              FROM organization_users 
-              WHERE id=%s''', 
-              (id,))
-  user = cur.fetchone()
-
-  if user is None:
-    cur.close()
-    conn.close()
-    return None
-  
   cur.execute ('''UPDATE organization_users 
-              SET first_name = %s, last_name = %s, email = %s, username = %s, password = %s, government_id = %s 
-              WHERE id = %s''',
-              (first_name, last_name, email, username, password, government_id, id))
+                SET first_name = %s, last_name = %s, email = %s, username = %s, password = %s, government_id = %s 
+                WHERE id = %s''',
+                (first_name, last_name, email, username, password, government_id, id))
   conn.commit()
   cur.close()
   conn.close()
 
-  return True
+
+def check_user (id):
+  conn = get_connection()
+  cur = conn.cursor()
+  
+  cur.execute('''SELECT id 
+              FROM organization_users 
+              WHERE id=%s''', 
+              (id,))
+  check_user = cur.fetchone()
+  cur.close()
+  conn.close()
+
+  return check_user

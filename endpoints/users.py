@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, request
-from dao.user_dao import register_user, login_user, update_user
+from dao.user_dao import register_user, login_user, update_user, check_user
 
 users_bp = Blueprint("users", __name__)
 
@@ -44,7 +44,11 @@ def update_user_info(id):
     password = data.get('password')
     government_id = data.get('government_id')
 
-    if update_user(id, first_name, last_name, email, username, password, government_id):
+
+    user_exist = check_user(id)
+
+    if user_exist:
+        update_user(id, first_name, last_name, email, username,password, government_id)
         return jsonify({"Success": "User Updated Successfully"}), 200
-    
+ 
     return jsonify({"Error": "No user found"}), 422
