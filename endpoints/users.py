@@ -44,7 +44,6 @@ def update_user_info(id):
     password = data.get('password')
     government_id = data.get('government_id')
 
-
     user_exist = check_user(id)
 
     if user_exist:

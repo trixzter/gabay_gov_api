@@ -47,8 +47,8 @@ def check_user (id):
               FROM organization_users 
               WHERE id=%s''', 
               (id,))
-  check_user = cur.fetchone()
+  user_check = cur.fetchone()
   cur.close()
   conn.close()
 
-  return check_user
+  return user_check

@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, request
-from dao.event_dao import create_event, view_all_events, view_events, edit_event, remove_event
+from dao.event_dao import create_event, view_all_events, view_event, edit_event, remove_event, check_event
 
 events_bp = Blueprint ("events", __name__)
 
@@ -36,7 +36,7 @@ def all_events():
 
 @events_bp.route('/<int:id>', methods=['GET'])
 def get_event(id):
-    event = view_events(id)
+    event = view_event(id)
 
     if event is None:
         return jsonify({"Error": "Event not found"}), 404
@@ -48,26 +48,29 @@ def get_event(id):
 @events_bp.route('/<int:id>', methods=['PUT'])
 def update_event(id):
     data = request.json
-    title=data.get('title')
+    title = data.get('title')
     date = data.get('date')
     time = data.get('time')
     location = data.get('location')
     photo = data.get('photo')
     description = data.get('description')
 
-    event = edit_event(id, title, date, time, location, photo, description)
+    event = check_event(id)
 
     if event:
+        edit_event(id, title, date, time, location, photo, description)
         return jsonify({"success":"Event Updated Succesfully"}), 200
     
-    return jsonify({'Error':'No Event Found'})
+    return jsonify({'Error':'No Event Found'}), 404
 
 
 @events_bp.route('/<int:id>', methods=['DELETE'])
 def delete_event(id):
-    event = remove_event(id)
+    
+    event = check_event(id)
 
     if event is None:
         return jsonify({"error":"Event not found"}), 404
     
+    remove_event(id)
     return jsonify({"success":"Event deleted succesfully"}), 200
