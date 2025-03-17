@@ -1,5 +1,6 @@
 from init_db import get_connection
 
+
 def create_email(subscriber_email):
   conn = get_connection()
   cur = conn.cursor()
@@ -17,11 +18,11 @@ def check_email(subscriber_email):
   conn = get_connection()
   cur = conn.cursor()
 
-  cur.execute('''SELECT * 
+  cur.execute('''SELECT 1 
               FROM subscription_emails 
               WHERE subscriber_email = %s''',
               (subscriber_email,))
-  email_exist = cur.fetchone()
+  email_exist = cur.fetchone() is not None 
   cur.close()
   conn.close()
 

@@ -3,6 +3,7 @@ from dao.user_dao import register_user, login_user, update_user, check_user
 
 users_bp = Blueprint("users", __name__)
 
+
 @users_bp.route('/register', methods = ['POST'])
 def register():
     data = request.json

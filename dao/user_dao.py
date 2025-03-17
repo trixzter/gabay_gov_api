@@ -1,5 +1,6 @@
 from init_db import get_connection
 
+
 def register_user (first_name, last_name, email, username, password, government_id):
   conn = get_connection()
   cur = conn.cursor()
@@ -11,6 +12,7 @@ def register_user (first_name, last_name, email, username, password, government_
   conn.commit()
   cur.close()
   conn.close()
+
 
 def login_user ( username, password):
   conn = get_connection()
@@ -25,6 +27,7 @@ def login_user ( username, password):
   conn.close()
 
   return user
+
 
 def update_user (id, first_name, last_name, email, username, password, government_id):
   conn = get_connection ()
@@ -47,7 +50,7 @@ def check_user (id):
               FROM organization_users 
               WHERE id=%s''', 
               (id,))
-  user_check = cur.fetchone()
+  user_check = cur.fetchone() is not None
   cur.close()
   conn.close()
 

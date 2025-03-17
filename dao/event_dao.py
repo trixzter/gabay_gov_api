@@ -1,6 +1,7 @@
 from init_db import get_connection
 from psycopg2.extras import RealDictCursor
 
+
 def create_event(title, date, time, location, photo, description):
   conn = get_connection()
   cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -41,7 +42,6 @@ def view_all_events(title, location):
   conn.close()
   return events
   
-
 
 def view_event (id):
   conn = get_connection()
@@ -91,5 +91,7 @@ def check_event(id):
                FROM events 
                WHERE id = %s''', 
                (id,))
-  event = cur.fetchone()
+  event = cur.fetchone() is not None
+  cur.close()
+  conn.close()
   return event

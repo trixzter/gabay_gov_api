@@ -3,6 +3,7 @@ from dao.event_dao import create_event, view_all_events, view_event, edit_event,
 
 events_bp = Blueprint ("events", __name__)
 
+
 @events_bp.route('', methods=['POST'])
 def add_event():
     data = request.json 
@@ -66,11 +67,10 @@ def update_event(id):
 
 @events_bp.route('/<int:id>', methods=['DELETE'])
 def delete_event(id):
-    
     event = check_event(id)
 
-    if event is None:
-        return jsonify({"error":"Event not found"}), 404
+    if event:
+        remove_event(id)
+        return jsonify({"success":"Event deleted succesfully"}), 200
     
-    remove_event(id)
-    return jsonify({"success":"Event deleted succesfully"}), 200
+    return jsonify({"error":"Event not found"}), 404
