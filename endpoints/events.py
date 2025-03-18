@@ -1,7 +1,6 @@
 from flask import jsonify, Blueprint, request
-from dao.event_dao import create_event, view_all_events, view_event, edit_event, remove_event, check_event
-
-events_bp = Blueprint ("events", __name__)
+from dao.event_dao import create_event, get_events, get_event_dao, update_event, delete_event, check_event_dao
+events_bp = Blueprint("events", __name__)
 
 
 @events_bp.route('', methods=['POST'])
@@ -20,11 +19,11 @@ def add_event():
 
 
 @events_bp.route('', methods=['GET'])
-def all_events():
+def get_events_info():
     title = request.args.get('title')
     location = request.args.get('location')
 
-    events = view_all_events(title, location)
+    events = get_events(title, location)
     
     if not events:
         return jsonify({"Error": "No events found"}), 404
@@ -36,18 +35,18 @@ def all_events():
 
 
 @events_bp.route('/<int:id>', methods=['GET'])
-def get_event(id):
-    event = view_event(id)
-
-    if event is None:
-        return jsonify({"Error": "Event not found"}), 404
+def get_event_info(id:int):                     
     
-    event['time'] = event['time'].strftime('%H:%M:%S')
-    return jsonify(event)
-
+    if get_event_dao(id):
+        event = get_event_dao(id)
+        event['time'] = event['time'].strftime('%H:%M:%S')
+        return jsonify(event)
+    
+    return jsonify({"Error": "Event not found"}), 404
+    
 
 @events_bp.route('/<int:id>', methods=['PUT'])
-def update_event(id):
+def edit_event(id:int):
     data = request.json
     title = data.get('title')
     date = data.get('date')
@@ -56,21 +55,18 @@ def update_event(id):
     photo = data.get('photo')
     description = data.get('description')
 
-    event = check_event(id)
-
-    if event:
-        edit_event(id, title, date, time, location, photo, description)
+    if check_event_dao(id):
+        update_event(id, title, date, time, location, photo, description)
         return jsonify({"success":"Event Updated Succesfully"}), 200
     
     return jsonify({'Error':'No Event Found'}), 404
 
 
 @events_bp.route('/<int:id>', methods=['DELETE'])
-def delete_event(id):
-    event = check_event(id)
+def remove_event(id:int):
 
-    if event:
-        remove_event(id)
+    if check_event_dao(id):
+        delete_event(id)
         return jsonify({"success":"Event deleted succesfully"}), 200
     
     return jsonify({"error":"Event not found"}), 404
