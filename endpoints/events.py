@@ -55,7 +55,7 @@ def update_event(id:int):
     photo = data.get('photo')
     description = data.get('description')
 
-    if event_dao.check_email_dao(id):
+    if event_dao.email_existing(id):
         event_dao.update_event(id, title, date, time, location, photo, description)
         return jsonify({"success":"Event Updated Succesfully"}), 200
     
@@ -65,7 +65,7 @@ def update_event(id:int):
 @events_bp.route('/<int:id>', methods=['DELETE'])
 def delete_event(id:int):
 
-    if event_dao.check_email_dao(id):
+    if event_dao.email_existing(id):
         event_dao.delete_event(id)
         return jsonify({"success":"Event deleted succesfully"}), 200
     
