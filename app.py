@@ -1,8 +1,8 @@
 from flask import Flask 
-from users import users_bp
-from events import events_bp
-from emails import emails_bp
-from assets import assets_bp
+from endpoints.users import users_bp
+from endpoints.events import events_bp
+from endpoints.emails import emails_bp
+from endpoints.assets import assets_bp
 from flask_cors import CORS
 
 
