@@ -1,11 +1,11 @@
 from flask import jsonify, Blueprint, request
-from dao.user_dao import register_user, login_user, update_user, check_user
+from dao.user_dao import create_user, login_user, update_user, check_user_dao
 
 users_bp = Blueprint("users", __name__)
 
 
-@users_bp.route('/register', methods = ['POST'])
-def register():
+@users_bp.route('/register', methods=['POST'])
+def register_user():
     data = request.json
     first_name = data.get('first_name')
     last_name = data.get('last_name')
@@ -14,14 +14,14 @@ def register():
     password = data.get('password')
     government_id = data.get ('government_id')
     
-    register_user (first_name, last_name, email, username, password, government_id)
+    create_user(first_name, last_name, email, username, password, government_id)
 
-    return ({"Success":"User Added Succesfully"}), 200
+    return({"Success":"User Added Succesfully"}), 200
 
 
 @users_bp.route('/login', methods = ['POST'])
 def login():
-    data=request.json
+    data = request.json
     username = data.get('username')
     password = data.get('password')
     
@@ -36,7 +36,7 @@ def login():
 
 
 @users_bp.route('/<int:id>', methods=['PUT'])
-def update_user_info(id):
+def update_user_info(id:int):
     data = request.json
     first_name = data.get('first_name')
     last_name = data.get('last_name')
@@ -45,9 +45,7 @@ def update_user_info(id):
     password = data.get('password')
     government_id = data.get('government_id')
 
-    user_exist = check_user(id)
-
-    if user_exist:
+    if check_user_dao(id):
         update_user(id, first_name, last_name, email, username,password, government_id)
         return jsonify({"Success": "User Updated Successfully"}), 200
  
