@@ -39,13 +39,13 @@ def update_user(id:int, first_name:str, last_name:str, email:str, username:str, 
   conn.close()
 
 
-def check_email_dao(id:int):
+def email_existing(id:int):
   conn = get_connection()
   cur = conn.cursor()
   
   cur.execute('SELECT id FROM organization_users WHERE id = %s', (id,))
-  check_email_dao = cur.fetchone() is not None
+  email_exist = cur.fetchone() is not None
   cur.close()
   conn.close()
 
-  return check_email_dao
+  return email_exist
