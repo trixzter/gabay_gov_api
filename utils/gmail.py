@@ -54,10 +54,6 @@ def create_event_notification(title, description):
   EMAIL_ADDRESS = os.getenv('EMAIL_USER')
   EMAIL_PASSWORD = os.getenv('EMAIL_PASS')
 
-  with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-
-    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-
   subject = title
   body = description
   msg = f'Subject: {subject}\n\n{body}'
