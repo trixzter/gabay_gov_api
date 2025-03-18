@@ -42,7 +42,7 @@ def get_events(title:str, location:str):
   return events
   
 
-def get_event_dao(id:int):
+def get_event(id:int):
   conn = get_connection()
   cur = conn.cursor(cursor_factory=RealDictCursor)
 
