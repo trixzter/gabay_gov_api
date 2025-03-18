@@ -21,3 +21,14 @@ def email_existing(subscriber_email:str):
   conn.close()
 
   return email_exist
+
+def get_emails():
+  conn = get_connection()
+  cur = conn.cursor()
+
+  cur.execute('SELECT subscriber_email FROM subscription_emails')
+  emails = cur.fetchall()
+  cur.close()
+  conn.close()
+  
+  return emails
