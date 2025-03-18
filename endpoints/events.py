@@ -1,5 +1,7 @@
 from flask import jsonify, Blueprint, request
 from dao import event_dao
+from utils.gmail import create_event_notification
+
 events_bp = Blueprint("events", __name__)
 
 
@@ -14,6 +16,8 @@ def create_event():
     description = data.get('description')
 
     event_dao.create_event(title, date, time, location, photo, description)
+
+    create_event_notification(title, description)
 
     return jsonify({"success":"Event Added Succesfully"}), 200
 
