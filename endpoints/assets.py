@@ -8,7 +8,7 @@ UPLOAD_DIR = Path("storage/images")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def generate_random_filename(original_filename):
+def generate_random_filename(original_filename:str):
     ext = Path(original_filename).suffix 
     random_name = ''.join(secrets.choice(string.ascii_letters) for i in range(10))  
     return f"{random_name}{ext}"
@@ -35,7 +35,7 @@ def upload():
 
 
 @assets_bp.route('/<filename>', methods=['GET'])
-def download(filename):
+def download(filename:str):
     file_path = UPLOAD_DIR / filename
     if not file_path.exists():
         return jsonify({'error': 'File not found'}), 404
