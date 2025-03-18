@@ -76,12 +76,12 @@ def delete_event(id:int):
   conn.close()
 
 
-def email_existing(id:int):
+def event_existing(id:int):
   conn = get_connection()
   cur = conn.cursor()
 
   cur.execute('SELECT * FROM events WHERE id = %s', (id,))
-  email_exist = cur.fetchone() is not None
+  event_exist = cur.fetchone() is not None
   cur.close()
   conn.close()
-  return email_exist
+  return event_exist
