@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, request
-from dao.event_dao import create_event, get_events, get_event_dao, update_event, delete_event, check_event_dao
+from dao import event_dao
 events_bp = Blueprint("events", __name__)
 
 
@@ -13,17 +13,17 @@ def add_event():
     photo = data.get('photo')
     description = data.get('description')
 
-    create_event(title, date, time, location, photo, description)
+    event_dao.create_event(title, date, time, location, photo, description)
 
     return jsonify({"success":"Event Added Succesfully"}), 200
 
 
 @events_bp.route('', methods=['GET'])
-def get_events_info():
+def get_events():
     title = request.args.get('title')
     location = request.args.get('location')
 
-    events = get_events(title, location)
+    events = event_dao.get_events(title, location)
     
     if not events:
         return jsonify({"Error": "No events found"}), 404
@@ -35,10 +35,10 @@ def get_events_info():
 
 
 @events_bp.route('/<int:id>', methods=['GET'])
-def get_event_info(id:int):                     
+def get_event(id:int):                     
     
-    if get_event_dao(id):
-        event = get_event_dao(id)
+    if event_dao.get_event(id):
+        event = event_dao.get_event(id)
         event['time'] = event['time'].strftime('%H:%M:%S')
         return jsonify(event)
     
@@ -55,8 +55,8 @@ def edit_event(id:int):
     photo = data.get('photo')
     description = data.get('description')
 
-    if check_event_dao(id):
-        update_event(id, title, date, time, location, photo, description)
+    if event_dao.check_event_dao(id):
+        event_dao.update_event(id, title, date, time, location, photo, description)
         return jsonify({"success":"Event Updated Succesfully"}), 200
     
     return jsonify({'Error':'No Event Found'}), 404
@@ -65,8 +65,8 @@ def edit_event(id:int):
 @events_bp.route('/<int:id>', methods=['DELETE'])
 def remove_event(id:int):
 
-    if check_event_dao(id):
-        delete_event(id)
+    if event_dao.check_event_dao(id):
+        event_dao.delete_event(id)
         return jsonify({"success":"Event deleted succesfully"}), 200
     
     return jsonify({"error":"Event not found"}), 404
