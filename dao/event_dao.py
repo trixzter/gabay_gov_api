@@ -76,12 +76,12 @@ def delete_event(id:int):
   conn.close()
 
 
-def check_event_dao(id:int):
+def check_email_dao(id:int):
   conn = get_connection()
   cur = conn.cursor()
 
   cur.execute('SELECT * FROM events WHERE id = %s', (id,))
-  event_check = cur.fetchone() is not None
+  check_email_dao = cur.fetchone() is not None
   cur.close()
   conn.close()
-  return event_check
+  return check_email_dao
