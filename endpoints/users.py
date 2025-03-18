@@ -1,5 +1,4 @@
 from flask import jsonify, Blueprint, request
-# from dao.user_dao import create_user, login_user, update_user, check_user_dao
 from dao import user_dao
 
 users_bp = Blueprint("users", __name__)
@@ -46,7 +45,7 @@ def update_user(id:int):
     password = data.get('password')
     government_id = data.get('government_id')
 
-    if user_dao.check_user_dao(id):
+    if user_dao.check_email_dao(id):
         user_dao.update_user(id, first_name, last_name, email, username,password, government_id)
         return jsonify({"Success": "User Updated Successfully"}), 200
  

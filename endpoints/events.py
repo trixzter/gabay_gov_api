@@ -4,7 +4,7 @@ events_bp = Blueprint("events", __name__)
 
 
 @events_bp.route('', methods=['POST'])
-def add_event():
+def create_event():
     data = request.json 
     title = data.get('title')
     date = data.get('date')
@@ -46,7 +46,7 @@ def get_event(id:int):
     
 
 @events_bp.route('/<int:id>', methods=['PUT'])
-def edit_event(id:int):
+def update_event(id:int):
     data = request.json
     title = data.get('title')
     date = data.get('date')
@@ -55,7 +55,7 @@ def edit_event(id:int):
     photo = data.get('photo')
     description = data.get('description')
 
-    if event_dao.check_event_dao(id):
+    if event_dao.check_email_dao(id):
         event_dao.update_event(id, title, date, time, location, photo, description)
         return jsonify({"success":"Event Updated Succesfully"}), 200
     
@@ -63,9 +63,9 @@ def edit_event(id:int):
 
 
 @events_bp.route('/<int:id>', methods=['DELETE'])
-def remove_event(id:int):
+def delete_event(id:int):
 
-    if event_dao.check_event_dao(id):
+    if event_dao.check_email_dao(id):
         event_dao.delete_event(id)
         return jsonify({"success":"Event deleted succesfully"}), 200
     
