@@ -17,35 +17,35 @@ def reset_password():
       smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 
       subject = 'FORGET PASSWORD'
-      body = 'click here to reset your password'
+      body = 'this is a forget password email'
 
       msg = f'Subject: {subject}\n\n{body}'
 
       smtp.sendmail(EMAIL_ADDRESS, EMAIL_ADDRESS, msg)
 
 
-def event_notification():
-  dotenv.load_dotenv()
+# def event_notification():
+#   dotenv.load_dotenv()
   
-  EMAIL_ADDRESS = os.getenv('EMAIL_USER')
-  EMAIL_PASSWORD = os.getenv('EMAIL_PASS')
+#   EMAIL_ADDRESS = os.getenv('EMAIL_USER')
+#   EMAIL_PASSWORD = os.getenv('EMAIL_PASS')
 
-  with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+#   with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
 
-    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+#     smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
 
-    subject = 'EVENT NOTIFICATION'
-    body = 'this is a event notification'
+#     subject = 'EVENT NOTIFICATION'
+#     body = 'this is a new event email'
 
-    msg = f'Subject: {subject}\n\n{body}'
+#     msg = f'Subject: {subject}\n\n{body}'
 
-    email_tuples = email_dao.get_emails()
+#     emails = email_dao.get_emails()
     
-    email_list = [email_tuple[0] for email_tuple in email_tuples]
+#     subscriber_emails = [email[0] for email in emails]
 
-    if email_list:
-      for recipient_email in email_list:
-        smtp.sendmail(EMAIL_ADDRESS, [recipient_email], msg)
+#     if subscriber_emails:
+#       for receiver_email in subscriber_emails:
+#         smtp.sendmail(EMAIL_ADDRESS, [receiver_email], msg)
 
 
 def create_event_notification(title, description):
@@ -58,15 +58,15 @@ def create_event_notification(title, description):
   body = description
   msg = f'Subject: {subject}\n\n{body}'
 
-  email_tuples = email_dao.get_emails()
+  emails = email_dao.get_emails()
     
-  email_list = [email_tuple[0] for email_tuple in email_tuples]
+  subscriber_emails = [email[0] for email in emails]
 
-  if email_list:
+  if subscriber_emails:
       with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
           smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-          for recipient_email in email_list:
-            smtp.sendmail(EMAIL_ADDRESS, recipient_email, msg)
+          for receiver_email in subscriber_emails:
+            smtp.sendmail(EMAIL_ADDRESS, receiver_email, msg)
 
             
 # if __name__ == '__main__':
