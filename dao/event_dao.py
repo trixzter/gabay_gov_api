@@ -23,9 +23,9 @@ def get_events(title:str, location:str):
   conditions = []
 
   if title:
-      conditions.append("title ILIKE %s")
-      params.append(f"%{title}%")
-    
+    conditions.append("title ILIKE %s")
+    params.append(f"%{title}%")
+  
   if location:
     conditions.append("location ILIKE %s")
     params.append(f"%{location}%")
