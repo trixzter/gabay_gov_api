@@ -22,6 +22,7 @@ def email_existing(subscriber_email:str):
 
   return email_exist
 
+
 def get_emails():
   conn = get_connection()
   cur = conn.cursor()
