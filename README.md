@@ -39,18 +39,29 @@ This will start the backend server and make the API accessible for use.
 
 This is the central backend file where all components connect.
 
-### `assets.py`
+### `init_db.py`
 
-Responsible for handling uploaded images.
+Handles database initialization and setup.
 
-### `emails.py`
+### `dao/`
 
-Manages emails for subscriptions.
+Contains Data Access Object (DAO) files responsible for database interactions.
 
-### `events.py`
+- `email_dao.py` - Manages email-related database operations.
+- `event_dao.py` - Handles event-related database operations.
+- `user_dao.py` - Manages user-related database operations.
 
-Handles event management.
+### `endpoints/`
 
-### `users.py`
+Contains API endpoint handlers.
 
-Responsible for managing user accounts.
+- `assets.py` - Responsible for handling uploaded images.
+- `emails.py` - Manages emails for subscriptions.
+- `events.py` - Handles event management.
+- `users.py` - Responsible for managing user accounts.
+
+### `utils/`
+
+Contains utility files for additional functionality.
+
+- `gmail.py` - Handles Gmail integration.
