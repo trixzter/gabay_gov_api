@@ -1,5 +1,8 @@
 from flask import jsonify, Blueprint, request
 from dao import event_dao
+from utils import gmail
+import threading
+
 events_bp = Blueprint("events", __name__)
 
 
@@ -14,8 +17,12 @@ def create_event():
     description = data.get('description')
 
     event_dao.create_event(title, date, time, location, photo, description)
+    
+    response = jsonify({"success":"Event Added Succesfully"}), 200
 
-    return jsonify({"success":"Event Added Succesfully"}), 200
+    threading.Thread(target=gmail.create_event_notification, args=(title, description)).start()
+
+    return response
 
 
 @events_bp.route('', methods=['GET'])
