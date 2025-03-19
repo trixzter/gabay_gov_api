@@ -33,7 +33,7 @@ def get_events(title:str, location:str):
   if conditions:
     query += ' WHERE ' + ' AND '.join(conditions)
     
-  query += ';'
+  query += ' ORDER BY id DESC;'
     
   cur.execute(query, params)
   events = cur.fetchall()
