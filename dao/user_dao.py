@@ -51,7 +51,7 @@ def email_existing(id:int):
   return email_exist
 
 
-def unique_gmail(email:str):
+def unique_email(email:str):
   conn = get_connection()
   cur = conn.cursor()
   
