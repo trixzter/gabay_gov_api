@@ -49,3 +49,26 @@ def email_existing(id:int):
   conn.close()
 
   return email_exist
+
+
+def unique_gmail(email:str):
+  conn = get_connection()
+  cur = conn.cursor()
+  
+  cur.execute('SELECT id FROM organization_users WHERE email = %s', (email,))
+  email_unique = cur.fetchone() is None
+  cur.close()
+  conn.close()
+
+  return email_unique
+
+def unique_username(username:str):
+  conn = get_connection()
+  cur = conn.cursor()
+  
+  cur.execute('SELECT id FROM organization_users WHERE username = %s', (username,))
+  username_unique = cur.fetchone() is None
+  cur.close()
+  conn.close()
+
+  return username_unique
