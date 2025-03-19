@@ -31,7 +31,7 @@ def upload():
   file_path = UPLOAD_DIR / filename
   file.save(file_path)
 
-  return jsonify({'Success': 'File Uploaded Successfully', 'Filename': filename}), 200
+  return jsonify({'Success': 'File Uploaded Successfully', 'filename': filename}), 200
 
 
 @assets_bp.route('/<filename>', methods=['GET'])
