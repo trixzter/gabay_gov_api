@@ -14,6 +14,12 @@ def register():
   password = data.get('password')
   government_id = data.get ('government_id')
   
+  if not user_dao.unique_gmail(email):
+    return jsonify({"Error": "Email Already Exists"}), 422
+  
+  if not user_dao.unique_username(username):
+    return jsonify({"Error": "Username Already Exists"}), 422
+  
   user_dao.create_user(first_name, last_name, email, username, password, government_id)
 
   return({"Success":"User Added Succesfully"}), 200
