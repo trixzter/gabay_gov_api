@@ -14,7 +14,7 @@ def register():
   password = data.get('password')
   government_id = data.get ('government_id')
   
-  if not user_dao.unique_gmail(email):
+  if not user_dao.unique_email(email):
     return jsonify({"Error": "Email Already Exists"}), 422
   
   if not user_dao.unique_username(username):
