@@ -51,8 +51,14 @@ def update_user(id:int):
   password = data.get('password')
   government_id = data.get('government_id')
 
-  if user_dao.email_existing(id):
-    user_dao.update_user(id, first_name, last_name, email, username,password, government_id)
-    return jsonify({"Success": "User Updated Successfully"}), 200
+  if not user_dao.email_existing(id):
+    return jsonify({"Error": "No User Found"}), 422
 
-  return jsonify({"Error": "No User Found"}), 422
+  if not user_dao.unique_email(email):
+    return jsonify({"Error": "Email Already Exists"}), 422
+
+  if not user_dao.unique_username(username):
+    return jsonify({"Error": "Username Already Exists"}), 422
+
+  user_dao.update_user(id, first_name, last_name, email, username, password, government_id)
+  return jsonify({"Success": "User Updated Successfully"}), 200
